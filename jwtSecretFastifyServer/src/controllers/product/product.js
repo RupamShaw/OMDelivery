@@ -6,10 +6,8 @@ export const getProductsByCategoryId = async (req, reply) => {
     const products = await Product.find({category: categoryId})
       .select("-category")
       .exec()
-    console.log(products)
     return reply.send(products)
   } catch (error) {
-    console.log(error)
     return reply.status(500).send({message: "Internal server error", error})
   }
 }

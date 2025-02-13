@@ -8,7 +8,6 @@ export const updateUser = async (req, res) => {
     let user =
       (await Customer.findById(userId)) ||
       (await DeliveryPartner.findById(userId))
-    console.log("user", user)
     if (!user) {
       return res.status(404).send({message: "User not found"})
     }
@@ -32,7 +31,6 @@ export const updateUser = async (req, res) => {
       user: updatedUser,
     })
   } catch (error) {
-    console.log(error)
     return res.status(500).send({message: "Failed to update user", error})
   }
 }

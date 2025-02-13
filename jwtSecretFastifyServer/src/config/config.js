@@ -22,7 +22,6 @@ sessionStore.on("error", error => {
 export const authenticate = async (email, password) => {
   // for first time
   if (email && password) {
-    console.log
     if (
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD

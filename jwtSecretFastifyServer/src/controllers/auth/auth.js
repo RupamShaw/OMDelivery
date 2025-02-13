@@ -27,7 +27,6 @@ export const loginCustomer = async (req, reply) => {
     const {phone, name} = req.body
     let customer = await Customer.findOne({phone})
     if (!customer) {
-      console.log("Going to create customer with phone", phone)
       customer = new Customer({
         phone,
         role: "Customer",
@@ -47,7 +46,6 @@ export const loginCustomer = async (req, reply) => {
       customer,
     })
   } catch (error) {
-    console.log("--------", error.message)
     reply.status(500).json({message: error.message}) // this gives error  "reply.status(...).json is not a function"
     // reply.status(500).send({message: error.message}) // this gives error  "reply.status(...).json is not a function"
     // reply.send({message: error.message}) // this crashes app
@@ -57,10 +55,8 @@ export const loginCustomer = async (req, reply) => {
 export const loginDeliveryPartner = async (req, reply) => {
   try {
     const {email} = req.body
-    console.log("email", email)
     let deliveryPartner = await DeliveryPartner.findOne({email})
     if (!deliveryPartner) {
-      console.log("=====not found", email)
       return reply.status(400).json({message: "DeliveryPartner not found"})
     }
     // const isMatch = await bcrypt.compare(
@@ -87,7 +83,6 @@ export const loginDeliveryPartner = async (req, reply) => {
 export const refreshToken = async (req, reply) => {
   const {refreshToken} = req.body
   if (!refreshToken) {
-    console.log("No token")
     return reply.status(403).json({message: "Access denied, token missing!"})
   }
   try {
@@ -119,7 +114,6 @@ export const refreshToken = async (req, reply) => {
 export const fetchUser = async (req, reply) => {
   try {
     const {userId, role} = req.user
-    console.log("fetchUser userId", userId)
     let user
     if (role === "Customer") {
       user = await Customer.findById(userId)
