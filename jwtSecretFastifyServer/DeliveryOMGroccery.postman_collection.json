@@ -1,0 +1,578 @@
+{
+	"info": {
+		"_postman_id": "fb679413-17a6-4f47-b5e8-59c565a84019",
+		"name": "DeliveryOMGroccery",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4340934"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": []
+		},
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "login-customer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"// Test to check the response body structure and values",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    var responseJSON = pm.response.json();",
+											"",
+											"    pm.expect(responseJSON).to.have.property('message');",
+											"    pm.expect(responseJSON).to.have.property('accessToken');",
+											"    pm.expect(responseJSON).to.have.property('refreshToken');",
+											"    pm.expect(responseJSON).to.have.property('customer');",
+											"",
+											"    pm.expect(responseJSON.customer).to.have.property('_id');",
+											"    pm.expect(responseJSON.customer).to.have.property('name');",
+											"    pm.expect(responseJSON.customer).to.have.property('role');",
+											"    pm.expect(responseJSON.customer).to.have.property('isActivated');",
+											"    pm.expect(responseJSON.customer).to.have.property('phone');",
+											"    pm.expect(responseJSON.customer).to.have.property('__v');",
+											"});",
+											"",
+											"// Set the refresh token in an environment variable",
+											"pm.environment.set(\"refreshToken\", pm.response.json().refreshToken);",
+											"pm.environment.set(\"accessToken\", pm.response.json().accessToken);",
+											"console.log(\"accessToken\", pm.response.json().accessToken)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"phone\":480089452,\n    \"name\": \"test1\" // name is optional when no name customer phone\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/login/customer",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"login",
+										"customer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logi-delivery-partner",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"accessToken\", pm.response.json().accessToken);",
+											"console.log(\"delivery accessToken\", pm.response.json().accessToken)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"rups.shojo@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/login/delivery-partner",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"login",
+										"delivery-partner"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refreshToken",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.request.body.raw = JSON.stringify({ \"refreshToken\": pm.environment.get(\"refreshToken\") })"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/refresh-token",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"refresh-token"
+									]
+								},
+								"description": "This endpoint is used to refresh the access token by providing the refresh token in the request body.\n\nTo use this endpoint, you can include the following pre-request script to retrieve the refresh token environment variable and include it in the request body:\n\n``` javascript\npm.environment.set(\"refreshToken\", \"your_refresh_token_value\");\n\n ```\n\n### Request Body\n\n- No request body is required for this endpoint.\n    \n\n### Response\n\nUpon a successful execution, the endpoint returns a 200 status with a JSON response including the following fields:\n\n- `message` (string): A message indicating the result of the token refresh.\n    \n- `accessToken` (string): The new access token.\n    \n- `refreshToken` (string): The new refresh token.\n    \n\nIn the pre-request script, the refresh token environment variable should be retrieved and included in the request body.\n\n### Request Body\n\n- No request body parameters are required for this request.\n    \n\n### Response\n\n- **Status**: 200\n    \n- **Content-Type**: application/json\n    \n- **Attributes**:\n    \n    - `message`: A message indicating the result of the token refresh.\n        \n    - `accessToken`: The new access token.\n        \n    - `refreshToken`: The new refresh token."
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{accessToken}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "getOrders",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}:{{port}}/api/order",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getOrderById",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/order/67ad4bde21d23453946b9b28",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"order",
+										"67ad4bde21d23453946b9b28"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateOrder",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \n  \"items\": [\n    {\n      \"id\": \"67aa9fd69d51220fbcbdfc77\",\n      \"item\": \"67aa9fd69d51220fbcbdfc77\",\n      \"count\": 1\n    }\n  ],\n  \"branch\": \"67ab46773e7466d3cd534d0b\",\n  \"totalPrice\": 25.50\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/order",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateOrderStatus",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"deliveryPersonLocation\": {\n        \"latitude\": -38.8085631,\n        \"longitude\": 145.9638844,\n        \"address\": \"30 latrobe street Melbourne\"\n    },\n    \"status\":\"delivered\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/order/67ad4bde21d23453946b9b28/status",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"order",
+										"67ad4bde21d23453946b9b28",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "confirmOrder",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"deliveryPersonLocation\": {\n        \"latitude\": -38.8085631,\n        \"longitude\": 145.9638844,\n        \"address\": \"30 latrobe street Melbourne\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/order/67ad4bde21d23453946b9b28/confirm",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"order",
+										"67ad4bde21d23453946b9b28",
+										"confirm"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "getProductsByCategoryId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}:{{port}}/api/products/67aa9fd69d51220fbcbdfc6e",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"products",
+										"67aa9fd69d51220fbcbdfc6e"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "category",
+					"item": [
+						{
+							"name": "get all categories",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}:{{port}}/api/categories",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "get User",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/user",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"rups DP\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}:{{port}}/api/user",
+									"host": [
+										"{{url}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{accessToken}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{accessToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

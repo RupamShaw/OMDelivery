@@ -1,0 +1,6 @@
+node_modules
+.env
+jwtSecretFastifyServer/node_modules
+.vscode
+.DS_Store
+.adminjs
