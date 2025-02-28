@@ -1,0 +1,8 @@
+MONGO_URI=mongodb+srv://databaseRups:Password@cluster0.0tj3s.mongodb.net/appname-like-groccery_app?retryWrites=true&w=majority&appName=Cluster0
+COOKIE_PASSWORD=cookie_password_here_123456_cookie_password_here_123456
+ACCESS_TOKEN_LIFE=1d
+REFRESH_TOKEN_LIFE=7d
+ACCESS_TOKEN_SECRET=rsa_encrypted_secret
+REFRESH_TOKEN_SECRET=rsa_encrypted_refresh_secret
+ADMIN_EMAIL=adminrupsw@gmail.com
+ADMIN_PASSWORD=admin
