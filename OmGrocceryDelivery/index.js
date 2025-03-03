@@ -2,7 +2,7 @@
  * @format
  */
 
-import {AppRegistry, Text, TextInput} from 'react-native';
+import {AppRegistry} from 'react-native';
 import App from './App';
 import {
   configureReanimatedLogger,
@@ -11,7 +11,7 @@ import {
 import {name as appName} from './app.json';
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
-  strict: false,
+  strict: true,
 });
 
 AppRegistry.registerComponent(appName, () => App);

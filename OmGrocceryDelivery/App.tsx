@@ -1,9 +1,13 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
+import Navigation from '@navigation/Navigation';
+
 const App = () => {
+  console.log('hello');
   return (
     <View style={styles.container}>
-      <Text>App</Text>
+      <Text>Appfvfdfdv</Text>
+      <Navigation />
     </View>
   );
 };
